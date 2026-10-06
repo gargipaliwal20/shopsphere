@@ -57,7 +57,7 @@ const Checkout = () => {
   };
 
   try {
-    const response = await apiFetch("http://localhost:5000/api/orders", {
+    const response = await apiFetch("/api/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

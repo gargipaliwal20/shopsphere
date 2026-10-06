@@ -12,9 +12,9 @@ export interface CartItem {
 interface CartStore {
   cart: CartItem[];
   addToCart: (product: CartItem) => void;
-  increaseQuantity: (id: number) => void;
-  decreaseQuantity: (id: number) => void;
-  removeFromCart: (id: number) => void;
+  increaseQuantity: (id: string) => void;
+  decreaseQuantity: (id: string) => void;
+  removeFromCart: (id: string) => void;
   clearCart: () => void;
 }
 

@@ -9,7 +9,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await apiFetch("http://localhost:5000/api/orders");
+        const response = await apiFetch("/api/orders");
         if (!response.ok) {
           throw new Error("Failed to fetch orders");
         }
@@ -70,7 +70,7 @@ const Orders = () => {
             </div>
 
             <div className="order-products">
-              {order.items.map((item) => (
+              {order.items.map((item: any) => (
                 <div className="order-product" key={item.productId}>
                   <img
                     src={item.image}

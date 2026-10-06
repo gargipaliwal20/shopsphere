@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import apiFetch from "../api/apiFetch";
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(false);
@@ -29,8 +30,8 @@ const Login = () => {
 
     if (isRegister) {
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/auth/register",
+        const response = await apiFetch(
+          "/api/auth/register",
           {
             method: "POST",
             headers: {
@@ -64,8 +65,8 @@ const Login = () => {
     }
     else {
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/auth/login",
+        const response = await apiFetch(
+          "/api/auth/login",
           {
             method: "POST",
             headers: {
