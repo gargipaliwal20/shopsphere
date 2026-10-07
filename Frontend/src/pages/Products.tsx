@@ -7,6 +7,9 @@ function Products() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [sort, setSort] = useState("default");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const productsPerPage = 8;
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,6 +66,17 @@ function Products() {
     return 0;
   });
 
+  const totalPages = Math.ceil(
+  sortedProducts.length / productsPerPage
+);
+
+const startIndex = (currentPage - 1) * productsPerPage;
+
+const currentProducts = sortedProducts.slice(
+  startIndex,
+  startIndex + productsPerPage
+);
+
   return (
     <div className="products-page">
       <div className="products-header">
@@ -76,23 +90,36 @@ function Products() {
           type="text"
           placeholder="Search products..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setCurrentPage(1);
+          }}
         />
 
         <select
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) => {
+            setCategory(e.target.value);
+            setCurrentPage(1);
+          }}
         >
           <option value="All">All Categories</option>
           <option value="Electronics">Electronics</option>
           <option value="Fashion">Fashion</option>
+          <option value="Home & Kitchen">Home & Kitchen</option>
+          <option value="Beauty">Beauty</option>
+          <option value="Sports">Sports</option>
+          <option value="Accessories">Accessories</option>
         </select>
       </div>
 
       {/* Sort */}
       <select
         value={sort}
-        onChange={(e) => setSort(e.target.value)}
+        onChange={(e) => {
+          setSort(e.target.value);
+          setCurrentPage(1);
+        }}
       >
         <option value="default">Sort By</option>
         <option value="price-low">Price: Low to High</option>
@@ -102,7 +129,7 @@ function Products() {
 
       {/* Products */}
       <div className="products-grid">
-        {sortedProducts.map((product) => (
+        {currentProducts.map((product) => (
           <div className="product-card" key={product._id}>
             <img
               src={product.image}
@@ -123,6 +150,44 @@ function Products() {
           </div>
         ))}
       </div>
+
+      {totalPages > 1 && (
+  <div className="pagination">
+    <button
+      onClick={() =>
+        setCurrentPage((page) => Math.max(page - 1, 1))
+      }
+      disabled={currentPage === 1}
+    >
+      ← Previous
+    </button>
+
+    {Array.from({ length: totalPages }, (_, index) => (
+      <button
+        key={index + 1}
+        onClick={() => setCurrentPage(index + 1)}
+        className={
+          currentPage === index + 1
+            ? "active"
+            : ""
+        }
+      >
+        {index + 1}
+      </button>
+    ))}
+
+    <button
+      onClick={() =>
+        setCurrentPage((page) =>
+          Math.min(page + 1, totalPages)
+        )
+      }
+      disabled={currentPage === totalPages}
+    >
+      Next →
+    </button>
+  </div>
+)}
 
       {filteredProducts.length === 0 && (
         <div className="no-products">
